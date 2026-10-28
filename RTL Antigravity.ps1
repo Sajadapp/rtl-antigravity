@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Re-applies the Persian RTL chat patch to Antigravity after an update.
   One-click: closes Antigravity, backs up app.asar, injects the RTL
@@ -27,7 +27,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) { Fail "node is not o
 # named after its basename; run it from $WorkRoot and read it there.
 New-Item -ItemType Directory -Path $WorkRoot -Force | Out-Null
 Push-Location $WorkRoot
-& npx --yes @electron/asar extract-file "$Asar" "dist/utils.js" | Out-Null
+& npx --yes @electron/asar@3.4.1 extract-file "$Asar" "dist/utils.js" | Out-Null
 Pop-Location
 $content = Get-Content (Join-Path $WorkRoot 'utils.js') -Raw -ErrorAction SilentlyContinue
 Remove-Item (Join-Path $WorkRoot 'utils.js') -Force -ErrorAction SilentlyContinue
@@ -48,7 +48,7 @@ Write-Host "Backup written: $backup"
 Remove-Item -Recurse -Force $SrcDir -ErrorAction SilentlyContinue
 Remove-Item -Recurse -Force $OutDir -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Path $OutDir -Force | Out-Null
-& npx --yes @electron/asar extract "$Asar" "$SrcDir"
+& npx --yes @electron/asar@3.4.1 extract "$Asar" "$SrcDir"
 if ($LASTEXITCODE -ne 0) { Fail 'asar extract failed' }
 
 # 3. Patch dist/utils.js (anchor must occur exactly once).
@@ -116,18 +116,18 @@ Write-Host 'Patched dist/utils.js (syntax OK)'
 
 # 4. Repack with the same unpack layout.
 $outAsar = Join-Path $OutDir 'app.asar'
-& npx --yes @electron/asar pack "$SrcDir" "$outAsar" --unpack-dir "$UnpackD"
+& npx --yes @electron/asar@3.4.1 pack "$SrcDir" "$outAsar" --unpack-dir "$UnpackD"
 if ($LASTEXITCODE -ne 0) { Fail 'asar pack failed' }
 
 # 5. Verify: same entry count + marker present + unpacked count matches.
-$oldList = & npx --yes @electron/asar list "$Asar"
-$newList = & npx --yes @electron/asar list "$outAsar"
+$oldList = & npx --yes @electron/asar@3.4.1 list "$Asar"
+$newList = & npx --yes @electron/asar@3.4.1 list "$outAsar"
 if ($oldList.Count -ne $newList.Count) { Fail ("entry count changed: {0} -> {1}" -f $oldList.Count, $newList.Count) }
 $oldU = (Get-ChildItem (Join-Path $ResDir 'app.asar.unpacked') -Recurse -File).Count
 $newU = (Get-ChildItem (Join-Path $OutDir 'app.asar.unpacked') -Recurse -File).Count
 if ($oldU -ne $newU) { Fail ("unpacked file count changed: {0} -> {1}" -f $oldU, $newU) }
 Push-Location $OutDir
-& npx --yes @electron/asar extract-file "$outAsar" "dist/utils.js" | Out-Null
+& npx --yes @electron/asar@3.4.1 extract-file "$outAsar" "dist/utils.js" | Out-Null
 Pop-Location
 $verify = Get-Content (Join-Path $OutDir 'utils.js') -Raw
 Remove-Item (Join-Path $OutDir 'utils.js') -Force -ErrorAction SilentlyContinue

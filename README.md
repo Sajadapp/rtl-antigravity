@@ -83,6 +83,13 @@ Copy-Item -LiteralPath (Join-Path $Res 'app.asar.pre-rtl') -Destination (Join-Pa
 
 این پروژه به Antigravity وابسته نیست و توسط توسعه‌دهنده آن تأیید نشده است. استفاده از آن مسئولیت خودتان است؛ ممکن است با آپدیت‌های آینده یا سیاست‌های اپ ناسازگار شود.
 
+### امنیت
+- تنها ارتباط شبکه‌ای، دریافت پکیج **نسخه‌ثابت** `@electron/asar@3.4.1` از npm است (بار اول؛ بعد کش می‌شود). هیچ تلمتری، حساب، توکن یا ارسال داده‌ای وجود ندارد.
+- پیام‌ها و مکالمات شما خوانده یا جایی فرستاده نمی‌شود؛ فقط جهت و چینش متن در رابط تغییر می‌کند.
+- به دسترسی **Administrator** نیاز ندارد؛ همه‌چیز داخل `%LOCALAPPDATA%`، `%TEMP%` و کش npm انجام می‌شود.
+- قبل از هر تغییر از `app.asar` بکاپ گرفته می‌شود و در صورت خطا خودکار rollback می‌شود؛ اگر ساختار فایل داخلی عوض شده باشد، به‌جای خراب‌کردن، متوقف می‌شود.
+- کد کامل و قابل بازبینی است؛ همین دو فایل، بدون باینری مخفی.
+
 ### جست‌وجو
 اگر دنبال این بودی، همین‌جایی: راست‌چین کردن Antigravity، فارسی‌سازی Antigravity، پچ RTL چت Antigravity، متن فارسی در Antigravity به‌هم‌ریخته، Antigravity RTL، Antigravity فارسی، راست به چپ Antigravity، مشکل فارسی Antigravity، فونت و جهت متن Antigravity.
 
@@ -141,13 +148,22 @@ Copy-Item -LiteralPath (Join-Path $Res 'app.asar.pre-rtl') -Destination (Join-Pa
 Re-run the patcher. It backs up the archive first and refuses to touch it if the internal structure changed, so a broken patch cannot corrupt the app.
 
 **Does it send my data anywhere?**
-No. The script only edits the local `app.asar` on your disk. It needs network access once to fetch `@electron/asar` via npx.
+No. The script only edits the local `app.asar` on your disk. The single outbound request is `npx` fetching the pinned `@electron/asar@3.4.1` package from the npm registry (once, then it is cached).
 
 **Why not a theme/extension?**
 Antigravity renders chat from its language server, so there is no extension point for CSS. Injecting a stylesheet into the Electron shell is the only reliable route.
 
 **Will my messages be affected?**
 No. Only text direction and alignment are changed; message content and storage are untouched.
+
+## Security
+
+- **One outbound request only:** `npx` downloads the **pinned** `@electron/asar@3.4.1` from the npm registry (first run, then cached). There is no telemetry, no account, no token, and no upload of any kind.
+- **Your conversations are never read or transmitted.** Only text direction/alignment in the UI is changed; message content and storage are untouched.
+- **No administrator rights.** Everything runs under `%LOCALAPPDATA%`, `%TEMP%` and the npm cache.
+- **Reversible by design.** `app.asar` is backed up to `app.asar.pre-rtl` before any change, and the script rolls back automatically if replacement fails. If the internal structure changed after an update, it aborts instead of corrupting the archive.
+- **Auditable.** Two plain-text files, no binaries, no obfuscation.
+- **Pinned dependency** so a future malicious release of the packaging tool cannot silently run. For a stricter setup, install it once yourself (`npm i -g @electron/asar@3.4.1`) and replace `npx --yes @electron/asar@3.4.1` with `asar` in the script.
 
 ## Keywords
 
