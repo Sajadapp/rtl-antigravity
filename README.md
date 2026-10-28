@@ -1,5 +1,10 @@
 # RTL Antigravity
 
+[![Platform](https://img.shields.io/badge/platform-Windows-0078D6)](#)
+[![PowerShell](https://img.shields.io/badge/language-PowerShell-5391FE)](#)
+[![Release](https://img.shields.io/github/v/release/Sajadapp/rtl-antigravity)](https://github.com/Sajadapp/rtl-antigravity/releases)
+[![Stars](https://img.shields.io/github/stars/Sajadapp/rtl-antigravity)](https://github.com/Sajadapp/rtl-antigravity/stargazers)
+
 <div dir="rtl">
 
 پچ **راست‌به‌چپ (RTL)** برای چت فارسی در اپلیکیشن **Antigravity** — یک اسکریپت یک‌کلیکی که بعد از هر آپدیت اپ، دوباره اعمال می‌شود.
@@ -78,6 +83,9 @@ Copy-Item -LiteralPath (Join-Path $Res 'app.asar.pre-rtl') -Destination (Join-Pa
 
 این پروژه به Antigravity وابسته نیست و توسط توسعه‌دهنده آن تأیید نشده است. استفاده از آن مسئولیت خودتان است؛ ممکن است با آپدیت‌های آینده یا سیاست‌های اپ ناسازگار شود.
 
+### جست‌وجو
+اگر دنبال این بودی، همین‌جایی: راست‌چین کردن Antigravity، فارسی‌سازی Antigravity، پچ RTL چت Antigravity، متن فارسی در Antigravity به‌هم‌ریخته، Antigravity RTL، Antigravity فارسی، راست به چپ Antigravity، مشکل فارسی Antigravity، فونت و جهت متن Antigravity.
+
 </div>
 
 ---
@@ -126,6 +134,24 @@ Re-run after every Antigravity update. The script is idempotent: if the marker `
 $Res = Join-Path $env:LOCALAPPDATA 'Programs\antigravity\resources'
 Copy-Item -LiteralPath (Join-Path $Res 'app.asar.pre-rtl') -Destination (Join-Path $Res 'app.asar') -Force
 ```
+
+## FAQ
+
+**Does it still work after an Antigravity update?**
+Re-run the patcher. It backs up the archive first and refuses to touch it if the internal structure changed, so a broken patch cannot corrupt the app.
+
+**Does it send my data anywhere?**
+No. The script only edits the local `app.asar` on your disk. It needs network access once to fetch `@electron/asar` via npx.
+
+**Why not a theme/extension?**
+Antigravity renders chat from its language server, so there is no extension point for CSS. Injecting a stylesheet into the Electron shell is the only reliable route.
+
+**Will my messages be affected?**
+No. Only text direction and alignment are changed; message content and storage are untouched.
+
+## Keywords
+
+Antigravity RTL, Antigravity Persian, Antigravity Farsi, Persian chat support, Farsi UI patch, right-to-left text, RTL patch, bidi text fix, mixed Persian English text, unicode-bidi plaintext, Electron asar patch, app.asar modification, Windows RTL editor, Arabic script support, RTL code editor, Antigravity Persian fix, Antigravity فارسی, راست‌چین کردن Antigravity.
 
 ## Disclaimer
 
