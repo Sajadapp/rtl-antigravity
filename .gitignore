@@ -1,0 +1,22 @@
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+agy-rtl-repatch/
+
+# Local env / secrets
+.env
+.env.*
+*.pem
+
+# Node (script uses npx only, but keep it clean)
+node_modules/
